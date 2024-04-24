@@ -1,0 +1,45 @@
+.login-form {
+  padding: 10rem 1rem;
+}
+
+.login-form-btn {
+  background: linear-gradient(90deg, #00C6FB 0%, #005BEA 100%);
+}
+
+.form {
+  padding-left: 2rem;
+}
+
+.form-btn,
+.login-input {
+  width: 353px;
+  height: 50px;
+}
+
+.login-input input::placeholder {
+  color: #C8C8C8;
+  font-size: 15.41px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+@media only screen and (max-width:600px) {
+
+  .form {
+    padding-left: 0;
+  }
+
+  .form-btn,
+  .login-input {
+    width: 290px;
+    height: 50px;
+  }
+}
+
+@media only screen and (max-width:1200px) {
+  .form-img {
+    display: none;
+  }
+}
+
