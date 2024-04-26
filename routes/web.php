@@ -3,9 +3,12 @@
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ImagesController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\SuperAdmin;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\AuthLogin;
+use App\Http\Middleware\AuthAdmin;
 
 Route::get('/', function () {
     return view('index');
@@ -21,7 +24,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('auth/google/login/type', 'redirectLogin')->name('google-auth-login');
     Route::get('/search-data', 'searchData')->name('searchData');
     Route::get('/search', 'search')->name('search');
-    Route::get('/admin', 'admin');
+    // Route::get('/admin', 'showAdmin')->name('admin');
 });
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -44,10 +47,22 @@ Route::middleware('authlogin')->group(function () {
         Route::get('/image/{id}', 'showImage')->name('image');
         Route::post('/image', 'image')->name('user-image');
         Route::get('/destroy/{id}', 'destroy')->name('destroy');
-        // Route::get('/destroy', 'sweetalert')->name('sweetalert');
     });
+});
+
+Route::middleware('adminlogin')->group(function () {
+    Route::controller(AuthController::class)->group(function () {
+        Route::get('/admin', 'showAdmin')->name('admin');
+    });
+});
+
+Route::middleware('superadminlogin')->group(function () {
+    Route::get('/super-admin', [SuperAdmin::class, 'view']);
 });
 
 Route::get('/forget', function () {
     return view('auth.forget-password');
 })->name('forget');
+
+Route::get('/admin-permission', [UserController::class, 'permission']);
+Route::get('/admin-users', [PermissionController::class, 'index']);

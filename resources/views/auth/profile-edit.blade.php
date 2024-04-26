@@ -22,7 +22,7 @@
                     <div class=" profile-form-img text-center">
                         <span id="editImage">
                             <img src="{{ empty($userDetail->profile_img) ? 'images/profile-form-images/gallery.png' : Storage::url($userDetail->profile_img) }}"
-                            alt="" width="100%" id="editImage" class="rounded-circle">
+                                alt="" width="100%" id="editImage" class="rounded-circle">
                         </span>
                     </div>
                     <div class="">
@@ -153,7 +153,8 @@
                 let reader = new FileReader();
                 reader.onload = function(e) {
                     let imagePreview = document.getElementById('editImage');
-                    imagePreview.innerHTML = '<img src="' + e.target.result + '" width="100%"  alt="Image Preview" class="rounded-circle" />';
+                    imagePreview.innerHTML = '<img src="' + e.target.result +
+                        '" width="100%"  alt="Image Preview" class="rounded-circle" />';
                 };
                 reader.readAsDataURL(this.files[0]);
             });

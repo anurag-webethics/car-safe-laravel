@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRegistration;
 use App\Models\User;
 use App\Models\Country;
+use Flasher\Laravel\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
@@ -123,7 +124,7 @@ class AuthController extends Controller
         return Socialite::driver('google')->redirect();
     }
 
-    public function searchData()
+    public function searchData(Request $request)
     {
         $countries =  $this->country;
         return view('auth.search', compact('countries'));
@@ -133,10 +134,11 @@ class AuthController extends Controller
     {
         $users = DB::table('users');
         $query = $users->join('countries', 'users.country_id', '=', 'countries.id')
-            ->select('users.*', 'countries.country');
+            ->join('role', 'users.role_id', '=', 'role.id')
+            ->join('permission_user', 'users.id', '=', 'permission_user.user_id')
+            ->select('users.*', 'countries.country', 'role.name as rolename', 'permission_user.user_id');
 
-        $data = $query->where('name', 'like', '%' .  $request->search . '%');
-
+        $data = $query->where('users.name', 'like', '%' .  $request->search . '%');
         if ($request->ajax()) {
             $data = $query->get()->toArray();
 
@@ -157,6 +159,7 @@ class AuthController extends Controller
             $gender = $request->gender;
             $country = $request->country;
             $hobbies = $request->hobbies;
+
 
             if ($gender) {
                 $data = array_filter($data, function ($val) use ($gender) {
@@ -191,9 +194,11 @@ class AuthController extends Controller
         }
     }
 
-    public function admin()
+    public function showAdmin()
     {
+        $userData = User::get();
+        $users = $userData->where('id');
         $countries =  $this->country;
-        return view('auth.search', compact('countries'));
+        return view('auth.admin', compact('users', 'countries'));
     }
 }

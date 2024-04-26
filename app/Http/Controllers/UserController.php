@@ -64,4 +64,18 @@ class UserController extends Controller
     {
         //
     }
+
+    public function permission()
+    {
+        // $currentAdmingId = $id
+        $userData = User::find(2);
+        $filedsName = [];
+        foreach ($userData->permission as $fieldName) {
+            array_push($filedsName, $fieldName->name);
+        }
+        echo '<Pre>';
+        print_r($filedsName);
+        die();
+        // return $filedsName;
+    }
 }

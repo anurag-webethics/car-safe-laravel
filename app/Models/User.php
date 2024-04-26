@@ -67,4 +67,13 @@ class User extends Authenticatable
             get: fn ($value) => (!empty($value)) ? implode(',', json_decode($value, true)) : null,
         );
     }
+
+    public function permission()
+    {
+        return $this->belongsToMany(permission::class, 'permission_user');
+    }
+
+    public function role(): BelongsTo {
+        return $this->belongsTo(Role::class);
+    }
 }

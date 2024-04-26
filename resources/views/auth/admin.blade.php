@@ -4,7 +4,7 @@
     <x-hero-banner></x-hero-banner>
 
     @php
-        $title = 'Search';
+        $title = 'Admin';
     @endphp
 
     <!-- profile-form  -->
@@ -67,7 +67,7 @@
         </form>
 
         <div id="search_list">
-            <table class="table" style="width:100%">
+            <table class="table table-bordered" style="width:100%">
                 <thead>
                     <tr>
                         <th scope="col" style="width:5%">#</th>
@@ -78,6 +78,15 @@
                     </tr>
                 </thead>
                 <tbody id="searchResult">
+                    @foreach ($users as $user)
+                        <tr>
+                            <td>{{ $user->id }}</td>
+                            <td>{{ $user->name[0] }}</td>
+                            <td>{{ $user->gender }}</td>
+                            <td>{{ $user->country->country }}</td>
+                            <td>{{ $user->hobbies }}</td>
+                        </tr>
+                    @endforeach
 
                 </tbody>
             </table>
@@ -112,13 +121,16 @@
                         if (response.status == true) {
                             if (Object.keys(response.data).length > 0) {
                                 $.each(response.data, function(index, value) {
+                                    let hobby = JSON.parse(value.hobbies);
+                                    // console.log(typeof(hobby) + hobby);
+                                    // console.log(hobbies);
                                     htmlData += `
                                  <tr>
                                 <th scope="row">${value.id}</th>
                                 <td> ${value.name} </td>
                                 <td> ${value.gender} </td>
                                 <td> ${value.country}</td>
-                                <td> ${value.hobbies} </td>         
+                                <td> ${hobby} </td>         
                                 </tr>
                                `
                                 })
