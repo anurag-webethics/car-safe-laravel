@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\DB;
 use Log;
+use App\Models\Role;
 
 class AuthController extends Controller
 {
@@ -134,9 +135,9 @@ class AuthController extends Controller
     {
         $users = DB::table('users');
         $query = $users->join('countries', 'users.country_id', '=', 'countries.id')
-            ->join('role', 'users.role_id', '=', 'role.id')
-            ->join('permission_user', 'users.id', '=', 'permission_user.user_id')
-            ->select('users.*', 'countries.country', 'role.name as rolename', 'permission_user.user_id');
+            // ->join('role', 'users.role_id', '=', 'role.id')
+            // ->join('permission_user', 'users.id', '=', 'permission_user.user_id')
+            ->select('users.*', 'countries.country');
 
         $data = $query->where('users.name', 'like', '%' .  $request->search . '%');
         if ($request->ajax()) {
@@ -196,9 +197,23 @@ class AuthController extends Controller
 
     public function showAdmin()
     {
-        $userData = User::get();
-        $users = $userData->where('id');
+        $currentUserRoleId = Auth::user()->role_id;
+        $rolesPremissions = Role::find($currentUserRoleId);
+        $accessibleFields = [];
+        foreach ($rolesPremissions->permissions as $accessFields) {
+            if ($accessFields->name == 'Country') {
+                $accessibleFields['country_id'] = 'Country';
+                continue;
+            }
+            $accessibleFields[lcfirst($accessFields->name)] = $accessFields->name;
+        }
+        if ($currentUserRoleId > 1) {
+            $users = User::where('role_id', '!=', '1')->select(array_keys($accessibleFields))->get();
+        } else {
+            $users = User::where('role_id', '!=', '1')->get();
+        }
+
         $countries =  $this->country;
-        return view('auth.admin', compact('users', 'countries'));
+        return view('auth.admin', compact('users', 'countries', 'accessibleFields'));
     }
 }

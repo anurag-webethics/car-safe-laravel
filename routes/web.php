@@ -24,7 +24,6 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('auth/google/login/type', 'redirectLogin')->name('google-auth-login');
     Route::get('/search-data', 'searchData')->name('searchData');
     Route::get('/search', 'search')->name('search');
-    // Route::get('/admin', 'showAdmin')->name('admin');
 });
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -57,7 +56,14 @@ Route::middleware('adminlogin')->group(function () {
 });
 
 Route::middleware('superadminlogin')->group(function () {
-    Route::get('/super-admin', [SuperAdmin::class, 'view']);
+    Route::controller(SuperAdmin::class)->group(function () {
+        Route::get('/super-admin', 'view')->name('role');
+        Route::post('/super-admin', 'create')->name('add-role');
+        // Route::put('/super-admin', 'update')->name('update-role');
+        Route::get('/edit-user-role/{id}', 'editUser')->name('update-role');
+        Route::post('/edit-user-role/{id}', 'update')->name('edit-user-role');
+        Route::get('/super-admin/{id}', 'destroy')->name('delete-user-role');
+    });
 });
 
 Route::get('/forget', function () {

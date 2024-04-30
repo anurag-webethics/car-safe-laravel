@@ -22,7 +22,7 @@
                     onclick="window.location.href = '{{ route('album-gallery') }}'">Album</button>
                 <button type="button"
                     class="btn btn-light rounded-0 text-primary fw-bold border-2 border border-primary btn-box1"
-                    onclick="window.location.href = '{{ route('searchData') }}'">Search</button>
+                    onclick="window.location.href = '{{ route('logout') }}'">Logout</button>
             </div>
         </div>
     </div>

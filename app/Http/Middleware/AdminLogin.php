@@ -16,10 +16,10 @@ class AdminLogin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user()->role == 1) {
+        if (Auth::user()->role_id == 2 || Auth::user()->role_id == 1) {
             return $next($request);
         } else {
-            return redirect()->route('login');
+            return redirect()->route('profile');
         }
     }
 }

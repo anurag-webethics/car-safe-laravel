@@ -18,7 +18,7 @@ class SuperAdminLogin
     {
 
         if (Auth::user()->role_id == 1) {
-           return $next($request);
+            return $next($request);
         }
 
         return redirect()->route('profile');

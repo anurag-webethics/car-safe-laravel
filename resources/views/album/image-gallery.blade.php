@@ -32,7 +32,7 @@
                 @foreach ($images as $image)
                     <div class="col-sm-6 mb-3  col-md-6 col-lg-4 mb-sm-0 ">
 
-                        <div class="card border-0" >
+                        <div class="card border-0">
                             <a href="{{ route('destroy', ['id' => $image->id]) }}" type="submit" id="delete"
                                 class="btn-close cross-close" name="remove" aria-label="Close"
                                 onclick="return confirm('Are you want to delete the image?')"></a>
