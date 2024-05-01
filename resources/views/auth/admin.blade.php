@@ -10,15 +10,19 @@
     <!-- profile-form  -->
 
     <div class="border rounded-4 my-5 mx-auto px-3 profile-form" style="width:80%">
-
         @if (Auth::user()->role_id > 1)
             <form action="" id="search-form">
                 @csrf
                 <div class="col-sm-6 mb-3 mb-sm-0 d-flex flex-column flex-md-row gap-5">
                     <div class="my-4 {{ !in_array('Name', $accessibleFields) ? 'd-none' : '' }}">
                         <h5>Name</h5>
-                        <input class="bg-body-tertiary border border-secondary-subtle py-1 px-4 fs-5" type="name"
+                        <input class="bg-body-tertiary border border-secondary-subtle py-1 px-4 fs-5" type="text"
                             name="name" id="name" onfocus="this.value=''">
+                    </div>
+                    <div class="my-4 {{ !in_array('Email', $accessibleFields) ? 'd-none' : '' }}">
+                        <h5>Email</h5>
+                        <input class="bg-body-tertiary border border-secondary-subtle py-1 px-4 fs-5" type="text"
+                            name="email" id="email" onfocus="this.value=''">
                     </div>
                     <div class="my-4 {{ !in_array('Gender', $accessibleFields) ? 'd-none' : '' }}">
                         <h5>Gender</h5>
@@ -184,6 +188,7 @@
             $('#search-form').on('change keyup', function(e) {
                 e.preventDefault();
                 var query = $('#name').val();
+                var email = $('#email').val();
                 var country = $('#country').val();
                 var gender = $('input[name="gender"]:checked').val();
                 var hobbies = [];
@@ -195,9 +200,11 @@
                     type: "GET",
                     data: {
                         'search': query,
+                        'email': email,
                         'country': country,
                         'gender': gender,
                         'hobbies': hobbies
+
                     },
                     success: function(data) {
                         let response = JSON.parse(data);
@@ -206,12 +213,10 @@
                             if (Object.keys(response.data).length > 0) {
                                 $.each(response.data, function(index, value) {
                                     let hobby = JSON.parse(value.hobbies);
-                                    // console.log(typeof(hobby) + hobby);
-                                    // console.log(hobbies);
                                     htmlData += `
                                  <tr>
-                                <th scope="row">${value.id}</th>
                                 <td> ${value.name} </td>
+                                <td> ${value.email} </td>
                                 <td> ${value.gender} </td>
                                 <td> ${value.country}</td>
                                 <td> ${hobby} </td>         
@@ -221,6 +226,7 @@
                             } else {
                                 htmlData = 'No data found'
                             }
+
                         }
                         $('#searchResult').html(htmlData);
                     }

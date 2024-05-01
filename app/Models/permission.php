@@ -14,6 +14,7 @@ class permission extends Model
     {
         return $this->belongsToMany(Role::class);
     }
+    
     protected function Name(): Attribute
     {
         return Attribute::make(

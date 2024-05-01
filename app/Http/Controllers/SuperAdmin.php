@@ -15,11 +15,9 @@ class SuperAdmin extends Controller
 
     public function view()
     {
-        $userData = User::where('role_id', '!=', '1')->get();
-        $users = $userData->where('id');
+        $users = User::where('role_id', '!=', '1')->get();
         $permissionFileds = permission::select('id', 'name')->get();
         $roles = Role::where('id', '!=', '1')->get();
-        // dd($roles->toArray());
         return view('super-admin.super-admin', compact('users', 'roles', 'permissionFileds'));
     }
 
@@ -106,6 +104,7 @@ class SuperAdmin extends Controller
     /**
      * Remove the specified resource from storage.
      */
+
     public function destroy(string $id)
     {
         $user = User::find($id)->delete();

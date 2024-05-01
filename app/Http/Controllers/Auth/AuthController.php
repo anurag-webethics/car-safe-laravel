@@ -135,14 +135,12 @@ class AuthController extends Controller
     {
         $users = DB::table('users');
         $query = $users->join('countries', 'users.country_id', '=', 'countries.id')
-            // ->join('role', 'users.role_id', '=', 'role.id')
-            // ->join('permission_user', 'users.id', '=', 'permission_user.user_id')
             ->select('users.*', 'countries.country');
 
         $data = $query->where('users.name', 'like', '%' .  $request->search . '%');
         if ($request->ajax()) {
-            $data = $query->get()->toArray();
 
+            $data = $query->get()->toArray();
             // $gender = $request->gender;
             // $country = $request->country;
             // $hobbies = $request->hobbies;
@@ -157,10 +155,18 @@ class AuthController extends Controller
             //     return true;
             // });
 
+            $email = $request->email;
             $gender = $request->gender;
             $country = $request->country;
             $hobbies = $request->hobbies;
 
+            if ($email) {
+                $data = array_filter($data, function ($val) use ($email) {
+                    if (str_contains($val->email, $email)) {
+                        return $val;
+                    }
+                });
+            }
 
             if ($gender) {
                 $data = array_filter($data, function ($val) use ($gender) {

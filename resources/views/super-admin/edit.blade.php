@@ -5,7 +5,7 @@
         $title = 'Edit User Role';
     @endphp
     <div class="container-fluid pt-5">
-        <form action="{{ route('edit-user-role',['id'=>$users->id]) }}" method="post">
+        <form action="{{ route('edit-user-role', ['id' => $users->id]) }}" method="post">
             @csrf
             <div class="form-group">
                 <label for="user">User</label><br>
