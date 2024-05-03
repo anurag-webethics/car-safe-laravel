@@ -11,65 +11,6 @@
 
     <div class="border rounded-4 my-5 mx-auto px-3 profile-form" style="width:80%">
         @if (Auth::user()->role_id > 1)
-            <form action="" id="search-form">
-                @csrf
-                <div class="col-sm-6 mb-3 mb-sm-0 d-flex flex-column flex-md-row gap-5">
-                    <div class="my-4 {{ !in_array('Name', $accessibleFields) ? 'd-none' : '' }}">
-                        <h5>Name</h5>
-                        <input class="bg-body-tertiary border border-secondary-subtle py-1 px-4 fs-5" type="text"
-                            name="name" id="name" onfocus="this.value=''">
-                    </div>
-                    <div class="my-4 {{ !in_array('Email', $accessibleFields) ? 'd-none' : '' }}">
-                        <h5>Email</h5>
-                        <input class="bg-body-tertiary border border-secondary-subtle py-1 px-4 fs-5" type="text"
-                            name="email" id="email" onfocus="this.value=''">
-                    </div>
-                    <div class="my-4 {{ !in_array('Gender', $accessibleFields) ? 'd-none' : '' }}">
-                        <h5>Gender</h5>
-                        <div class="bg-body-tertiary border border-secondary-subtle  d-flex gap-3 py-1 px-4 ">
-                            <input class="form-check-input" type="radio" name="gender" value="male" id="gender">
-                            <label class="form-check-label fs-5">male</label>
-                            </label>
-                            <input class="form-check-input" type="radio" name="gender" value="female">
-                            <label class="form-check-label fs-5">female</label>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="my-4 {{ !in_array('Country', $accessibleFields) ? 'd-none' : '' }}">
-                        <h5>Country</h5>
-                        <select class="bg-body-tertiary border border-secondary-subtle d-flex gap-3 py-1 px-4 fs-2"
-                            name="country" id="country">
-                            <option value=''>Select Country</option>
-                            @foreach ($countries as $country)
-                                <option value='{{ $country->id }}'>{{ $country->country }}
-                                </option>
-                            @endforeach
-                        </select>
-
-                    </div>
-                    <div class="my-4 {{ !in_array('Hobbies', $accessibleFields) ? 'd-none' : '' }}">
-                        <h5>Hobbies</h5>
-                        <div
-                            class="bg-body-tertiary border border-secondary-subtle d-flex gap-3 py-1 px-4 flex-column flex-md-row">
-
-                            <input class="form-check-input" type="checkbox" name="hobbies" value="Dancing">
-                            <label class="form-check-label fs-5">Dancing</label>
-                            </label>
-
-                            <input class="form-check-input" type="checkbox" name="hobbies" value="Singing">
-                            <label class="form-check-label fs-5">Singing</label>
-                            </label>
-
-                            {{-- <input class="form-check-input" type="checkbox" name="hobbies[]" value="Watching to movies">
-                        <label class="form-check-label fs-5">Watching to movies</label> --}}
-                            </label>
-                        </div>
-                    </div>
-                    {{-- <div class="my-6">
-                    <button type="button" class="btn btn-success rounded-0" style="margin-top: 55px">Search</button>
-                </div> --}}
-                </div>
-            </form>
             <div id="search_list">
                 <table class="table table-bordered" style="width:100%">
                     <thead>
@@ -100,15 +41,20 @@
         @else
             <form action="" id="search-form">
                 @csrf
-                <div class="col-sm-6 mb-3 mb-sm-0 d-flex flex-column flex-md-row gap-5">
+                <div class="col-sm-6 mb-3 mb-sm-0 d-flex flex-column flex-md-row gap-4">
                     <div class="my-4">
                         <h5>Name</h5>
-                        <input class="bg-body-tertiary border border-secondary-subtle py-1 px-4 fs-5" type="name"
+                        <input class="bg-body-tertiary border border-secondary-subtle py-1 fs-5" type="name"
                             name="name" id="name" onfocus="this.value=''">
                     </div>
                     <div class="my-4">
+                        <h5>Email</h5>
+                        <input class="bg-body-tertiary border border-secondary-subtle py-1 fs-5" type="text"
+                            name="email" id="email" onfocus="this.value=''">
+                    </div>
+                    <div class="my-4">
                         <h5>Gender</h5>
-                        <div class="bg-body-tertiary border border-secondary-subtle  d-flex gap-3 py-1 px-4 ">
+                        <div class="bg-body-tertiary border border-secondary-subtle  d-flex gap-2 py-1 px-3 ">
                             <input class="form-check-input" type="radio" name="gender" value="male" id="gender">
                             <label class="form-check-label fs-5">male</label>
                             </label>
@@ -119,8 +65,8 @@
                     </div>
                     <div class="my-4">
                         <h5>Country</h5>
-                        <select class="bg-body-tertiary border border-secondary-subtle d-flex gap-3 py-1 px-4 fs-2"
-                            name="country" id="country">
+                        <select class="bg-body-tertiary border border-secondary-subtle py-1 fs-2" name="country"
+                            id="country">
                             <option value=''>Select Country</option>
                             @foreach ($countries as $country)
                                 <option value='{{ $country->id }}'>{{ $country->country }}
@@ -159,6 +105,7 @@
                         <tr>
                             <th scope="col" style="width:5%">#</th>
                             <th scope="col" style="width:15%">Name</th>
+                            <th scope="col" style="width:15%">Email</th>
                             <th scope="col" style="width:15%">Gender</th>
                             <th scope="col" style="width:20%">Country</th>
                             <th scope="col" style="width:30%">Hobbies</th>
@@ -169,6 +116,7 @@
                             <tr>
                                 <td>{{ $user->id }}</td>
                                 <td>{{ $user->name[0] }}</td>
+                                <td>{{ $user->email }}</td>
                                 <td>{{ $user->gender }}</td>
                                 <td>{{ $user->country->country }}</td>
                                 <td>{{ $user->hobbies }}</td>
@@ -215,6 +163,7 @@
                                     let hobby = JSON.parse(value.hobbies);
                                     htmlData += `
                                  <tr>
+                                <td> ${value.id} </td>
                                 <td> ${value.name} </td>
                                 <td> ${value.email} </td>
                                 <td> ${value.gender} </td>

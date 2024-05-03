@@ -133,7 +133,7 @@ class AuthController extends Controller
 
     public function search(Request $request)
     {
-        $users = DB::table('users');
+        $users = DB::table('users')->where('role_id', '!=', '1');
         $query = $users->join('countries', 'users.country_id', '=', 'countries.id')
             ->select('users.*', 'countries.country');
 
