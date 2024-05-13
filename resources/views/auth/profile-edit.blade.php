@@ -15,7 +15,7 @@
             <img src="images/profile-form-images/gallery.png" alt="">
         </div>
 
-        <form action="{{ route('profile-update', ['id' => $userDetail->id]) }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('profile.update', ['id' => $userDetail->id]) }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="d-flex profile-edit justify-content-between align-items-center flex-wrap py-5">
                 <div class="d-flex profile-name gap-4 align-items-center flex-wrap ">

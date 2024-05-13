@@ -13,18 +13,9 @@ class UserController extends Controller
      * Display a listing of the resource.
      */
 
-    public $userDetail;
-    public $countries;
-
-    public function __construct()
-    {
-        $this->userDetail = Auth::user();
-        $this->countries = Country::get()->take(20);
-    }
-
     public function index()
     {
-        return view('auth.profile', ['userDetail' => $this->userDetail]);
+        return view('auth.profile', ['userDetail' => Auth::user()]);
     }
 
     /**
@@ -33,8 +24,8 @@ class UserController extends Controller
     public function edit()
     {
         return view('auth.profile-edit', [
-            'userDetail' => $this->userDetail,
-            'countries' => $this->countries,
+            'userDetail' => Auth::user(),
+            'countries' => Country::get()->take(20),
         ]);
     }
 
@@ -55,14 +46,6 @@ class UserController extends Controller
         }
         $userDetail->save();
         return redirect('profile')->with('success', 'Profile is updated Successfully ');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 
     public function permission()

@@ -19,7 +19,7 @@
                 </button>
                 <button type="button"
                     class="btn btn1 btn-light text-primary rounded-0 border-2 fw-bold border border-primary btn-box1"
-                    onclick="window.location.href = '{{ route('album-gallery') }}'">Album</button>
+                    onclick="window.location.href = '{{ route('album.gallery') }}'">Album</button>
                 <button type="button"
                     class="btn btn-light rounded-0 text-primary fw-bold border-2 border border-primary btn-box1"
                     onclick="window.location.href = '{{ route('logout') }}'">Logout</button>

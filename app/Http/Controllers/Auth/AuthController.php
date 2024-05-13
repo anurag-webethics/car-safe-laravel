@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\UserRegistration;
 use App\Models\User;
 use App\Models\Country;
@@ -12,32 +13,22 @@ use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\DB;
 use Log;
+use Illuminate\Support\Arr;
 use App\Models\Role;
 
 class AuthController extends Controller
 {
-    public $country;
-
-    public function __construct()
-    {
-        $this->country = Country::get()->take(20);
-    }
 
     public function showLogin()
     {
         return view('auth.login');
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
-
+        $credentials = Arr::only($request->all(), ['email', 'password']);
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-
             return redirect('/');
         }
 
@@ -48,8 +39,8 @@ class AuthController extends Controller
 
     public function showRegistration()
     {
-        $countries =  $this->country;
-        return view('auth.registration', compact('countries'));
+        $countries =  Country::get()->take(20);
+        return view('auth.registration', ['countries' => $countries]);
     }
 
     public function registration(UserRegistration $request)
@@ -125,88 +116,12 @@ class AuthController extends Controller
         return Socialite::driver('google')->redirect();
     }
 
-    public function searchData(Request $request)
-    {
-        $countries =  $this->country;
-        return view('auth.search', compact('countries'));
-    }
-
-    public function search(Request $request)
-    {
-        $users = DB::table('users')->where('role_id', '!=', '1');
-        $query = $users->join('countries', 'users.country_id', '=', 'countries.id')
-            ->select('users.*', 'countries.country');
-
-        $data = $query->where('users.name', 'like', '%' .  $request->search . '%');
-        if ($request->ajax()) {
-
-            $data = $query->get()->toArray();
-            // $gender = $request->gender;
-            // $country = $request->country;
-            // $hobbies = $request->hobbies;
-
-            // $data = array_filter($data, function ($val) use ($gender, $country, $hobbies) {
-            //     if (($gender && $val->gender != $gender) ||
-            //         ($country && $val->country_id != $country) ||
-            //         ($hobbies && !array_intersect($hobbies, json_decode($val->hobbies)))
-            //     ) {
-            //         return false;
-            //     }
-            //     return true;
-            // });
-
-            $email = $request->email;
-            $gender = $request->gender;
-            $country = $request->country;
-            $hobbies = $request->hobbies;
-
-            if ($email) {
-                $data = array_filter($data, function ($val) use ($email) {
-                    if (str_contains($val->email, $email)) {
-                        return $val;
-                    }
-                });
-            }
-
-            if ($gender) {
-                $data = array_filter($data, function ($val) use ($gender) {
-                    if ($val->gender == $gender) {
-                        return $val;
-                    }
-                });
-            }
-
-            if ($country) {
-                $data = array_filter($data, function ($val) use ($country) {
-                    if ($val->country_id == $country) {
-                        return $val;
-                    }
-                });
-            }
-
-            if ($hobbies) {
-                $data = array_filter($data, function ($val) use ($hobbies) {
-                    $hobby = json_decode($val->hobbies);
-                    if (array_intersect($hobbies, $hobby)) {
-                        return $val;
-                    }
-                });
-            }
-
-            return json_encode([
-                'data' => $data,
-                'status' => true,
-                'msg' => 'data fetch successfull'
-            ], 200);
-        }
-    }
-
     public function showAdmin()
     {
         $currentUserRoleId = Auth::user()->role_id;
         $rolesPremissions = Role::find($currentUserRoleId);
         $accessibleFields = [];
-        foreach ($rolesPremissions->permissions as $accessFields) {
+        foreach ($rolesPremissions->permission as $accessFields) {
             if ($accessFields->name == 'Country') {
                 $accessibleFields['country_id'] = 'Country';
                 continue;
@@ -219,7 +134,7 @@ class AuthController extends Controller
             $users = User::where('role_id', '!=', '1')->get();
         }
 
-        $countries =  $this->country;
-        return view('auth.admin', compact('users', 'countries', 'accessibleFields'));
+        $countries =  Country::get()->take(20);
+        return view('auth.admin', ['users' => $users, 'countries' => $countries, 'accessibleFields' => $accessibleFields]);
     }
 }

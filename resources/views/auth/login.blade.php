@@ -16,7 +16,7 @@
 
             <div class="col col-sm-12 col-lg-4 form">
 
-                <form action="{{ route('login-user') }}" method="POST">
+                <form action="{{ route('login.user') }}" method="POST">
                     @csrf
 
                     <div class="d-flex justify-content-center align-items-center flex-column">
@@ -45,7 +45,6 @@
                                     {{ $message }}
                                 @enderror
                             </span>
-
                         </div>
 
                         <div class="mb-3">
@@ -58,6 +57,11 @@
                                     aria-describedby="emailHelp" name="password" placeholder="Enter passwords">
                                 <img src="images/login/Suche (2).png" class="ms-auto ps-2" alt="">
                             </div>
+                            <span class="text-danger">
+                                @error('password')
+                                    {{ $message }}
+                                @enderror
+                            </span>
                         </div>
 
 
@@ -73,7 +77,7 @@
                             class="btn btn-primary rounded-0 btn-lg login-form-btn rounded-1 form-btn fw-bold border-0">Log
                             In</button>
                         <button type="button"
-                            class="btn text-black fw-bold fs-5 btn-outline-secondary rounded-1 mt-3 btn-lg form-btn"  onclick="window.location.href = '{{ route('google-auth-login') }}'">
+                            class="btn text-black fw-bold fs-5 btn-outline-secondary rounded-1 mt-3 btn-lg form-btn"  onclick="window.location.href = '{{ route('google.auth_login') }}'">
                             <img src="images/login/icons8-google-48.png" alt="" height="28">
                             Continue with Google
                         </button>

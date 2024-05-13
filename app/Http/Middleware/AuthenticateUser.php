@@ -4,10 +4,10 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
 
-class SuperAdminLogin
+class AuthenticateUser
 {
     /**
      * Handle an incoming request.
@@ -16,11 +16,9 @@ class SuperAdminLogin
      */
     public function handle(Request $request, Closure $next): Response
     {
-
-        if (Auth::user()->role_id == 1) {
-            return $next($request);
+        if (!Auth::check()) {
+            return redirect('login');
         }
-
-        return redirect()->route('profile');
+        return $next($request);
     }
 }

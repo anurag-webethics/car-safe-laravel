@@ -18,7 +18,7 @@
                         <h2 class="text-dark fw-semibold">{{implode($userDetail->name)}}</h2>
                         <p class="fw-bold fs-5">Email- {{$userDetail->email}}</p>
                         <p class=" fs-5">Phone- 259 875 69875</p>
-                        <a href="{{ route('profile-edit') }}" class="link-light link-offset-2 link-underline-opacity-0">
+                        <a href="{{ route('profile.edit') }}" class="link-light link-offset-2 link-underline-opacity-0">
                             <button type="button" class="btn btn-primary rounded-0 fs-5">Edit</button>
                         </a>
                     </div>

@@ -14,7 +14,7 @@
                     <p class="py-4 lh-lg home-p">Are you looking for amazing pre-owned cars purchase and sale <br>
                         services?
                         Don’t worry! We got it for you!</p>
-                    <a href="{{ route('album-gallery') }}" class="link-light link-offset-2 link-underline-opacity-0"><button
+                    <a href="{{ route('album.gallery') }}" class="link-light link-offset-2 link-underline-opacity-0"><button
                             type="button" class="btn  rounded-0 btn-lg home-btn fs-5 fw-bold text-white">Buy a
                             Car</button></a>
                     <span class="home-span fs-4 fw-semibold d-block pt-4">Trade or sell your car now <svg

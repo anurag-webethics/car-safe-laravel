@@ -21,7 +21,7 @@
                     {{$message}}
                 @enderror
 
-                <form action="{{ route('create-user') }}" method="post">
+                <form action="{{ route('create.user') }}" method="post">
                     @csrf
                     <div class="d-flex justify-content-center align-items-center flex-column">
 
@@ -217,7 +217,7 @@
                             class="btn btn-primary rounded-0 btn-lg login-form-btn rounded-1 form-btn fw-bold border-0">Sign
                             Up</button>
                         <button type="button"
-                            class="btn text-black fw-bold fs-5 btn-outline-secondary rounded-1 mt-3 btn-lg form-btn" onclick="window.location.href = '{{ route('google-auth') }}'">
+                            class="btn text-black fw-bold fs-5 btn-outline-secondary rounded-1 mt-3 btn-lg form-btn" onclick="window.location.href = '{{ route('google.auth') }}'">
                             <img src="images/login/icons8-google-48.png" alt="" height="28">
                             Continue
                             with Google

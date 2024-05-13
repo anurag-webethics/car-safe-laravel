@@ -9,11 +9,11 @@ use App\Http\Controllers\Auth\AuthController;
 
 // Route::controller(AuthController::class)->group(function () {
 //     Route::get('/login', 'showLogin')->name('login');
-//     Route::post('/login', 'login')->name('login-user');
+//     Route::post('/login', 'login')->name('login.user');
 //     Route::get('/registration', 'showRegistration')->name('registration');
-//     Route::post('/registration', 'Registration')->name('create-user');
+//     Route::post('/registration', 'Registration')->name('create.user');
 //     Route::post('/get-country', 'getCountry')->name('get-country');
-//     // Route::get('auth/google', 'redirect')->name('google-auth');
+//     // Route::get('auth/google', 'redirect')->name('google.auth');
 //     // Route::get('auth/google/call-back', 'callback');
-//     // Route::get('auth/google/login/type', 'redirectLogin')->name('google-auth-login');
+//     // Route::get('auth/google/login/type', 'redirectLogin')->name('google.auth_login');
 // });

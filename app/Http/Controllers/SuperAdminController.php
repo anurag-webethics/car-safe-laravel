@@ -2,38 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\permission;
+use App\Http\Requests\SuperAdminRequest;
+use Illuminate\Http\Request;
+use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Http\Request;
 
-class SuperAdmin extends Controller
+class SuperAdminController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
 
     public function view()
     {
         $users = User::where('role_id', '!=', '1')->get();
-        $permissionFileds = permission::select('id', 'name')->get();
+        $permissionFileds = Permission::select('id', 'name')->get();
         $roles = Role::where('id', '!=', '1')->get();
-        return view('super-admin.super-admin', compact('users', 'roles', 'permissionFileds'));
-    }
-
-    public function index(Request $request)
-    {
+        return view('super-admin.super-admin', ['users' => $users, 'roles' => $roles, 'permissionFileds' => $permissionFileds]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
+    public function create(SuperAdminRequest $request)
     {
         try {
+            dd($request->all());
             $message = '';
             if ($request->has('createPermission')) {
-                $permission = new permission();
+                $permission = new Permission();
                 $permission->name = $request->addPermission;
                 $permission->save();
                 $message = 'Permission created successfully';
@@ -42,7 +37,7 @@ class SuperAdmin extends Controller
                 $role->name = $request->role;
                 $role->save();
                 $permissionsIds = $request->permissions;
-                $role->permissions()->sync($permissionsIds);
+                $role->permission()->sync($permissionsIds);
                 $message = 'Role created successfully';
             }
             return redirect('/super-admin')->with('success', $message);
@@ -51,41 +46,17 @@ class SuperAdmin extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
     public function editUser($id)
     {
         $users = User::find($id);
-        $rolesPremissions = Role::find($users->role_id)->permissions;
+        $rolesPremissions = Role::find($users->role_id)->permission;
         $chkFields = [];
         foreach ($rolesPremissions as $key => $value) {
             $chkFields[$value->id] = $value->name;
         }
         $roles = Role::where('id', '!=', '1')->get();
-        $permissionFileds = permission::select('id', 'name')->get();
-        return view('super-admin.edit', compact('users', 'roles', 'permissionFileds', 'chkFields'));
+        $permissionFileds = Permission::select('id', 'name')->get();
+        return view('super-admin.edit',  ['users' => $users, 'roles' => $roles, 'permissionFileds' => $permissionFileds, 'chkFields' => $chkFields]);
     }
 
     /**
@@ -93,10 +64,9 @@ class SuperAdmin extends Controller
      */
     public function update(Request $request, $id)
     {
-        // dd($request->permissions);
         $user = User::findOrFail($id);
         $user->role_id = $request->userole;
-        Role::find($request->userole)->permissions()->sync($request->permissions);
+        Role::find($request->userole)->permission()->sync($request->permissions);
         $user->save();
         return redirect('/super-admin');
     }

@@ -7,6 +7,20 @@
 
     <div class="p-5">
 
+        @if (!empty('addPermission'))
+            @error('addPermission')
+                <div class="alert alert-danger" role="alert">
+                    {{ $message }}
+                </div>
+            @enderror
+        @else
+            @error('role')
+                <div class="alert alert-danger" role="alert">
+                    {{ $message }}
+                </div>
+            @enderror
+        @endif
+
         <div class="d-flex justify-content-between">
             <h1>Manage user</h1>
             <!-- Button trigger modal -->
@@ -30,7 +44,7 @@
                     </div>
 
                     <div class="modal-body">
-                        <form action="{{ route('add-role') }}" method="post">
+                        <form action="{{ route('add.role') }}" method="post">
                             @csrf
                             <div class="form-group">
                                 <label for="role">Role</label><br>
@@ -63,7 +77,7 @@
                     </div>
 
                     <div class="modal-body">
-                        <form action="" method="post">
+                        <form action="{{ route('add.role') }}" method="post">
                             @csrf
                             <div class="form-group">
                                 <label for="user">Permission</label><br>
@@ -105,9 +119,9 @@
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->role->name }}</td>
                             <td><button class="btn btn-primary me-2">View</button><button class="btn btn-success me-2"
-                                    onclick="window.location.href = '{{ route('update-role', ['id' => $user->id]) }}'">Edit</button>
-                                <button class="btn btn-danger"
-                                    onclick="window.location.href = '{{ route('delete-user-role', ['id' => $user->id]) }}'">Delete</button>
+                                    onclick="window.location.href = '{{ route('update.role', ['id' => $user->id]) }}'">Edit</button>
+                                <a href='{{ route('delete.user_role', ['id' => $user->id]) }}' class="btn btn-danger"
+                                    onclick="return confirm('Are you want to delete the user?')" type='submit'>Delete</a>
                             </td>
                         </tr>
                     @endforeach

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\permission;
+use App\Models\Permission;
 use Illuminate\Http\Request;
 
 class PermissionController extends Controller
@@ -12,62 +12,12 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        $permission = permission::get();
-        
-        foreach($permission as $arr){
-            // withPivot('permission_id');
-            foreach($arr->users as $user){
+        $permissions = Permission::get();
+
+        foreach ($permissions as $permission) {
+            foreach ($permission->users as $user) {
                 return $user->permission_id;
             }
         }
-        // return $permission->users;
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(permission $permission)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(permission $permission)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, permission $permission)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(permission $permission)
-    {
-        //
     }
 }

@@ -11,24 +11,25 @@
 
     <div class="center">
         <div class="container my-5 py-5 border rounded-4">
-            <form action="{{ route('user-album') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('user.album') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label fs-6 fw-semibold">Album Name</label>
-                    <input type="text" name="albumName" class="form-control bg-body-tertiary py-3 ps-3 fs-6 "
-                        id="exampleInput" value="{{old('albumName')}}" placeholder="Enter Your Album Name">
-                        <span class="text-danger">
-                            @error('albumName')
-                                {{ $message }}
-                            @enderror
-                        </span>
+                    <input type="text" name="album_name" class="form-control bg-body-tertiary py-3 ps-3 fs-6 "
+                        id="exampleInput" value="{{ old('album_name') }}" placeholder="Enter Your Album Name">
+                    <span class="text-danger">
+                        @error('album_name')
+                            {{ $message }}
+                        @enderror
+                    </span>
                 </div>
 
                 <div class="mb-3">
                     <label for="formFileLg" class="form-label">Large file input example</label>
-                    <input class="form-control form-control-lg" value="{{old('albumImage')}}"  name="albumImage" id="formFileLg" type="file">
+                    <input class="form-control form-control-lg" value="{{ old('album_image') }}" name="album_image"
+                        id="formFileLg" type="file">
                     <span class="text-danger">
-                        @error('albumImage')
+                        @error('album_image')
                             {{ $message }}
                         @enderror
                     </span>

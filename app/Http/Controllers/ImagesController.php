@@ -15,15 +15,14 @@ class ImagesController extends Controller
 
     public function showImage($id)
     {
-        return view('album.image', compact('id'));
+        return view('album.image', ['id' => $id]);
     }
 
     public function image(Request $request)
     {
-        $validate = $request->validate([
+        $request->validate([
             'image' => 'required',
         ]);
-
 
         $file = count($request->file('image'));
         $fileName = $request->file('image');
@@ -37,7 +36,7 @@ class ImagesController extends Controller
             }
             $images->save();
         }
-        return redirect('image-gallery/' . $request->album_id)->with('success', 'Image upload successfully');
+        return redirect('images/' . $request->album_id . '/view')->with('success', 'Image upload successfully');
     }
 
     /**
@@ -46,23 +45,7 @@ class ImagesController extends Controller
     public function show(Images $images, $id)
     {
         $images = $images::where('album_id', $id)->orderBy('id', 'DESC')->paginate(6);
-        return view('album.image-gallery', compact('id', 'images'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(images $images)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, images $images)
-    {
-        //
+        return view('album.image-gallery', ['id' => $id, 'images' => $images]);
     }
 
     /**
@@ -76,10 +59,4 @@ class ImagesController extends Controller
         $images = $file_path->delete();
         return back()->with('success', 'Image deleted successfully');;
     }
-    // public function sweetalert()
-    // {
-
-    //     sweetalert()->addWarning('Are you sure to delete this item?');
-    //     return back();
-    // }
 }

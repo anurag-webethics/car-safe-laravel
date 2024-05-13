@@ -10,7 +10,7 @@ $title = 'images';
 
     <div class="center">
         <div class="container my-5 py-5 border rounded-4">
-            <form action="{{route('user-image')}}" method="post" enctype="multipart/form-data">
+            <form action="{{route('user.image')}}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
                     <label for="formFileLg" class="form-label">Large file input example</label>
